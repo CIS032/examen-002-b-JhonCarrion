@@ -5,9 +5,16 @@
  */
 package datos;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,17 +24,29 @@ import javax.swing.JOptionPane;
 public class Banco {
 
     static ArrayList<Cuenta> listaCuenta = new ArrayList<Cuenta>();
-    static String archivo = "";
+    public static String archivo = "";
+
+    public static ArrayList<Cuenta> getListaCuenta() {
+        return listaCuenta;
+    }
 
     public static void agregar(Cuenta cuenta) {
         listaCuenta.add(cuenta);
     }
-    
+
+    public static void editar(int pos, Cuenta cuenta) {
+        listaCuenta.set(pos, cuenta);
+    }
+
+    public static void eliminar(Cuenta cuenta) {
+        listaCuenta.remove(cuenta);
+    }
+
     public static void grabar() {
         PrintWriter pw = null;
         try {
-	    // Examen002: La ruta y el nombre del 'archivo' debe ser 
-	    // establecido dinamicamente por el usuario en el lugar adecuado
+            // Examen002: La ruta y el nombre del 'archivo' debe ser 
+            // establecido dinamicamente por el usuario en el lugar adecuado
             FileWriter fw = new FileWriter(archivo, true);
             pw = new PrintWriter(fw);
         } catch (Exception e) {
@@ -36,42 +55,74 @@ public class Banco {
         for (Cuenta cuenta : listaCuenta) {
             String linea = "";
             if (cuenta instanceof CuentaAhorro) {
-                linea="Cuenta Ahorro"+";"+cuenta.toString();
-            }if (cuenta instanceof CuentaHipoteca) {
-                linea="Cuenta Hipoteca"+";"+cuenta.toString();
-            }if (cuenta instanceof CuentaPrestamo) {
-                linea="Cuenta Prestamo"+";"+cuenta.toString();
+                linea = "Cuenta Ahorro" + ";" + cuenta.toString();
+            }
+            if (cuenta instanceof CuentaHipoteca) {
+                linea = "Cuenta Hipoteca" + ";" + cuenta.toString();
+            }
+            if (cuenta instanceof CuentaPrestamo) {
+                linea = "Cuenta Prestamo" + ";" + cuenta.toString();
             }
             pw.println(linea);
         }
         pw.close();
     }
-    
+
     public static Cuenta buscarCuentaAhorro() {
         String nombre = (JOptionPane.showInputDialog(null, "Ingrese nombre", "Verificar Cuenta", JOptionPane.INFORMATION_MESSAGE));
         CuentaAhorro cuentaAH = new CuentaAhorro(nombre);
-        Cuenta c=(Cuenta)cuentaAH;
+        Cuenta c = (Cuenta) cuentaAH;
         if (listaCuenta.contains(c)) {
             return listaCuenta.get(listaCuenta.indexOf(c));
         }
         return null;
     }
+
     public static Cuenta buscarCuentaHipoteca() {
         String nombre = (JOptionPane.showInputDialog(null, "Ingrese nombre", "Verificar Cuenta", JOptionPane.INFORMATION_MESSAGE));
         CuentaHipoteca cuentaAH = new CuentaHipoteca(nombre);
-        Cuenta c=(Cuenta)cuentaAH;
+        Cuenta c = (Cuenta) cuentaAH;
         if (listaCuenta.contains(c)) {
             return listaCuenta.get(listaCuenta.indexOf(c));
         }
         return null;
     }
 
-    public static void leerCuentas(){
-	/* 
-	 * Lee los datos desde un archivo de texto, crea objetos 'Cuenta'
-	 * y los almacena en la lista 'listaCuenta'
-	 */
-	// Examen 002: Completar este metodo
-
+    public static void leerCuentas() {
+        BufferedReader br = null;
+        try {
+            /*
+             * Lee los datos desde un archivo de texto, crea objetos 'Cuenta'
+             * y los almacena en la lista 'listaCuenta'
+             */
+            // Examen 002: Completar este metodo
+            br = new BufferedReader(new FileReader(new File(archivo)));
+            String s;
+            while ((s = br.readLine()) != null) {
+                String resto = s.split(";")[1];
+                String cliente = resto.split(", ")[0].replace("cliente=", "");
+                String tipoCliente = resto.split(", ")[1].replace("tipoCliente=", "");
+                double balance = Double.parseDouble(resto.split(", ")[2].replace("balance=", ""));
+                double tasaInteres = Double.parseDouble(resto.split(", ")[3].replace("tasaInteres=", ""));
+                if (s.split(";")[0].equals("Cuenta Ahorro")) {
+                    listaCuenta.add(new CuentaAhorro(cliente, tipoCliente, balance, tasaInteres));
+                } else if (s.split(";")[0].equals("Cuenta Hipoteca")) {
+                    listaCuenta.add(new CuentaHipoteca(cliente, tipoCliente, balance, tasaInteres));
+                } else if (s.split(";")[0].equals("Cuenta Prestamo")) {
+                    listaCuenta.add(new CuentaPrestamo(cliente, tipoCliente, balance, tasaInteres));
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
