@@ -1,0 +1,349 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package vista;
+
+import datos.Banco;
+import datos.Cuenta;
+import datos.CuentaAhorro;
+import datos.CuentaHipoteca;
+import datos.CuentaPrestamo;
+import java.awt.Frame;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Cuarto A
+ */
+public class ahorros extends javax.swing.JDialog {
+
+    private String tipo;
+    private ArrayList<Cuenta> lc;
+    private ArrayList<Cuenta> lc1 = new ArrayList<>();
+
+    /**
+     * Creates new form ahorros
+     */
+    public ahorros(java.awt.Frame parent, boolean modal, String tipo1) {
+        super(parent, modal);
+        initComponents();
+        this.btn_Retirar.setEnabled(false);
+        this.tipo = tipo1;
+        this.lc = Banco.getListaCuenta();
+        this.setTitle("Listado de ahorros de " + tipo);
+        cargarTabla("");
+    }
+
+    private void cargarTabla(String b) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre del Cliente");
+        modelo.addColumn("Tipo");
+        modelo.addColumn("Balance");
+        modelo.addColumn("Taza de Interes");
+        if (!b.equals("")) {
+            for (int i = 0; i < lc.size(); i++) {
+                if (lc.get(i).getCliente().equals(b)
+                        || lc.get(i).getTipoCliente().equals(b)) {
+                    if (tipo.equals("Cuenta Ahorro")) {
+                        if (lc.get(i) instanceof CuentaAhorro) {
+                            this.btn_Retirar.setEnabled(true);
+                            String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                            modelo.addRow(data);
+                            lc1.add(new CuentaAhorro(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                        }
+                    }
+                    if (tipo.equals("Cuenta Hipoteca")) {
+                        if (lc.get(i) instanceof CuentaHipoteca) {
+                            String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                            modelo.addRow(data);
+                            lc1.add(new CuentaHipoteca(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                        }
+                    }
+                    if (tipo.equals("Cuenta Prestamo")) {
+                        if (lc.get(i) instanceof CuentaPrestamo) {
+                            String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                            modelo.addRow(data);
+                            lc1.add(new CuentaPrestamo(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < lc.size(); i++) {
+                if (tipo.equals("Cuenta Ahorro")) {
+                    if (lc.get(i) instanceof CuentaAhorro) {
+                        this.btn_Retirar.setEnabled(true);
+                        String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                        modelo.addRow(data);
+                        lc1.add(new CuentaAhorro(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                    }
+                }
+                if (tipo.equals("Cuenta Hipoteca")) {
+                    if (lc.get(i) instanceof CuentaHipoteca) {
+                        String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                        modelo.addRow(data);
+                        lc1.add(new CuentaHipoteca(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                    }
+                }
+                if (tipo.equals("Cuenta Prestamo")) {
+                    if (lc.get(i) instanceof CuentaPrestamo) {
+                        String data[] = {lc.get(i).getCliente(), lc.get(i).getTipoCliente(), "" + lc.get(i).getBalance(), "" + lc.get(i).getTasaInteres()};
+                        modelo.addRow(data);
+                        lc1.add(new CuentaPrestamo(data[0], data[1], lc.get(i).getBalance(), lc.get(i).getTasaInteres()));
+                    }
+                }
+            }
+        }
+        tbl_Ahorros.setModel(modelo);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_Ahorros = new javax.swing.JTable();
+        btn_Depositar = new javax.swing.JButton();
+        btn_Editar = new javax.swing.JButton();
+        btn_Eliminar = new javax.swing.JButton();
+        btn_Cancelar = new javax.swing.JButton();
+        txt_buscar = new javax.swing.JTextField();
+        btn_buscar = new javax.swing.JButton();
+        btn_Retirar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        tbl_Ahorros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tbl_Ahorros);
+
+        btn_Depositar.setText("Depositar");
+        btn_Depositar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_DepositarActionPerformed(evt);
+            }
+        });
+
+        btn_Editar.setText("Editar");
+        btn_Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EditarActionPerformed(evt);
+            }
+        });
+
+        btn_Eliminar.setText("Eliminar");
+        btn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EliminarActionPerformed(evt);
+            }
+        });
+
+        btn_Cancelar.setText("Cancelar");
+        btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelarActionPerformed(evt);
+            }
+        });
+
+        btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
+        btn_Retirar.setText("Retirar");
+        btn_Retirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_RetirarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btn_Depositar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_Retirar)
+                                .addGap(71, 71, 71)
+                                .addComponent(btn_Editar)
+                                .addGap(54, 54, 54)
+                                .addComponent(btn_Eliminar)
+                                .addGap(55, 55, 55)
+                                .addComponent(btn_Cancelar)))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txt_buscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_buscar))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscar))
+                .addGap(13, 13, 13)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_Depositar)
+                    .addComponent(btn_Editar)
+                    .addComponent(btn_Eliminar)
+                    .addComponent(btn_Cancelar)
+                    .addComponent(btn_Retirar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btn_CancelarActionPerformed
+
+    private void btn_DepositarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DepositarActionPerformed
+        // TODO add your handling code here:
+        if (tipo.equals("Cuenta Hipoteca")) {
+            String opciones[] = {"Deposito Normal", "Deposito Taza de Interes"};
+            int opt = JOptionPane.showOptionDialog(this, "Seleccione el tipo de Deposito que desea realizar", "Tipo de Deposito", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+            if (opt == 1) {
+                if (lc1.get(tbl_Ahorros.getSelectedRow()) instanceof CuentaHipoteca) {
+                    CuentaHipoteca ch = (CuentaHipoteca) lc1.get(tbl_Ahorros.getSelectedRow());
+                    ch.depositarTazaInteres();
+                }
+            } else if (opt == 0) {
+                new depositar((Frame) this.getParent(), true, this.tipo, lc1.get(tbl_Ahorros.getSelectedRow())).setVisible(true);
+                cargarTabla("");
+            }
+        } else {
+            new depositar((Frame) this.getParent(), true, this.tipo, lc1.get(tbl_Ahorros.getSelectedRow())).setVisible(true);
+            cargarTabla("");
+        }
+    }//GEN-LAST:event_btn_DepositarActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        // TODO add your handling code here:
+        if (txt_buscar.getText().isEmpty()) {
+            cargarTabla("");
+        } else {
+            cargarTabla(txt_buscar.getText());
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
+        // TODO add your handling code here:
+        new datos((Frame) this.getParent(), true, this.tipo, lc1.get(tbl_Ahorros.getSelectedRow())).setVisible(true);
+        cargarTabla("");
+    }//GEN-LAST:event_btn_EditarActionPerformed
+
+    private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        // TODO add your handling code here:
+        Banco.eliminar(lc1.get(tbl_Ahorros.getSelectedRow()));
+        cargarTabla("");
+    }//GEN-LAST:event_btn_EliminarActionPerformed
+
+    private void btn_RetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RetirarActionPerformed
+        // TODO add your handling code here:
+        if (lc1.get(tbl_Ahorros.getSelectedRow()) instanceof CuentaAhorro) {
+            new retirar((Frame) this.getParent(), true, (CuentaAhorro) lc1.get(tbl_Ahorros.getSelectedRow())).setVisible(true);
+            cargarTabla("");
+        }
+    }//GEN-LAST:event_btn_RetirarActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ahorros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ahorros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ahorros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ahorros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ahorros dialog = new ahorros(new javax.swing.JFrame(), true, null);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Cancelar;
+    private javax.swing.JButton btn_Depositar;
+    private javax.swing.JButton btn_Editar;
+    private javax.swing.JButton btn_Eliminar;
+    private javax.swing.JButton btn_Retirar;
+    private javax.swing.JButton btn_buscar;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_Ahorros;
+    private javax.swing.JTextField txt_buscar;
+    // End of variables declaration//GEN-END:variables
+}
